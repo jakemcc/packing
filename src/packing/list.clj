@@ -99,23 +99,3 @@
   (let [[types other] (bucket-by keyword? (get lists type))]
     (apply clojure.set/union (set other) (mapv (partial packing-list' lists) types))))
 
-(defn packing-list
-  ([trip-type]
-   (assert (contains? packing-lists trip-type))
-   (let [items (packing-lists trip-type)
-         other-lists (filter keyword? items)]
-     (reduce set/union
-             (apply disj items other-lists)
-             (mapv packing-list other-lists)))))
-
-
-(comment
-  (packing-list ::glamping)
-
-  (packing-list ::work-trip)
-
-  (packing-list ::bouldering)
-
-
-  ;;
-  )
