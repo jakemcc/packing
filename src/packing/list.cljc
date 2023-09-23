@@ -2,7 +2,8 @@
   (:require
    [clojure.set :as set]
    [reagent.core :as r]
-   [reagent.dom :as rdom]))
+   [reagent.dom :as rdom]
+   [clojure.string :as string]))
 
 (defn i [s]
   {:type :item :value s})
@@ -108,7 +109,23 @@
             (mapv #(packing-list' lists % (clojure.set/union seen-types types))
                   new-types)))))
 
-(def state (r/atom {:trip-types #{}}))
+(defn new-state [] {:trip-types #{}})
+
+(defonce state (r/atom (new-state)))
+
+(defn load-from-hash []
+  (let [hash (.-hash js/location)
+        hash (js/decodeURIComponent (subs hash 1))]
+    (println hash)
+    (if (string/blank? hash)
+      {}
+      (-> (read-string hash)
+          (update :trip-types set)))))
+
+(defn set-hash! [m]
+  (set! (.-hash js/location) (js/encodeURIComponent (pr-str m))))
+
+(add-watch state :state-changed (fn [k ref old new] (set-hash! new)))
 
 (defn toggle-trip-type [type]
   (swap! state update :trip-types (fn [s](if (contains? s type)
@@ -123,6 +140,7 @@
 
 (defn my-component []
   [:div
+   [:div#actions [:button {:on-click #(reset! state (new-state))} "reset"]]
    [:div#trip-types
     (for [type (keys packing-lists)]
       ^{:key type} [:div
@@ -140,4 +158,5 @@
                                   "TODO: ")
                          (:value i)]])])]])
 
+(reset! state (load-from-hash))
 (rdom/render [my-component] (.getElementById js/document "app"))
