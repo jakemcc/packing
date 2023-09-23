@@ -95,7 +95,14 @@
     [(get r true) (get r false)]))
 
 (defn packing-list'
-  [lists type]
-  (let [[types other] (bucket-by keyword? (get lists type))]
-    (apply clojure.set/union (set other) (mapv (partial packing-list' lists) types))))
+  ([lists type]
+   (packing-list' lists type #{}))
+  ([lists type seen-types]
+   (let [[types other] (bucket-by keyword? (get lists type))
+         types (set types)
+         new-types (clojure.set/difference types seen-types)]
+     (apply clojure.set/union
+            (set other)
+            (mapv #(packing-list' lists % (clojure.set/union seen-types types))
+                  new-types)))))
 
