@@ -1,6 +1,8 @@
-(ns packing.list 
+(ns packing.list
   (:require
-    [clojure.set :as set]))
+   [clojure.set :as set]
+   [reagent.core :as r]
+   [reagent.dom :as rdom]))
 
 (defn i [s]
   {:type :item :value s})
@@ -8,8 +10,8 @@
 (defn a [s]
   {:type :action :value s})
 
-(defn q [s]
-  {:type :question :value s})
+(defn q [s yes-answer]
+  {:type :question :value s :yes yes-answer})
 
 (def always #{::accessories ::bathroom ::clothes})
 
@@ -54,8 +56,8 @@
    ::camping #{(i "tent")
                ::outdoors}
 
-   ::climbing #{(q "bouldering?")
-                (q "sport climbing?")
+   ::climbing #{(q "bouldering?" ::bouldering)
+                (q "sport climbing?" ::sport-climbing)
                 (i "chalk")
                 (a "refill chalk")
                 (i "climbing shoes")
@@ -106,3 +108,36 @@
             (mapv #(packing-list' lists % (clojure.set/union seen-types types))
                   new-types)))))
 
+(def state (r/atom {:trip-types #{}}))
+
+(defn toggle-trip-type [type]
+  (swap! state update :trip-types (fn [s](if (contains? s type)
+                                           (disj s type)
+                                           (conj s type)))))
+
+(defn trip-selected [type]
+  (contains? (:trip-types @state) type))
+
+(defn trip-types []
+  (:trip-types @state))
+
+(defn my-component []
+  [:div
+   [:div#trip-types
+    (for [type (keys packing-lists)]
+      ^{:key type} [:div
+                    [:input {:type "checkbox"
+                             :checked (trip-selected type)
+                             :on-change #(toggle-trip-type type)}]
+                    [:label type]])]
+   [:div#list
+    (let [items (reduce clojure.set/union (mapv (partial packing-list' packing-lists)
+                                                (trip-types)))]
+      [:ul (for [i (sort-by :type items)]
+             ^{:key i} [:div
+                        [:input {:type "checkbox"}]
+                        [:label (when (= :action (:type i))
+                                  "TODO: ")
+                         (:value i)]])])]])
+
+(rdom/render [my-component] (.getElementById js/document "app"))
