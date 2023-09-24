@@ -152,11 +152,16 @@
   [k x]
   (fn [m] (= x (get m k))))
 
+(def subcategory-trip-types
+  (set (keep :yes (reduce set/union (vals packing-lists)))))
+
+(def root-trip-types (clojure.set/difference (set (keys packing-lists)) subcategory-trip-types))
+
 (defn my-component []
   [:div
    [:div#actions [:button {:on-click #(reset! state (new-state))} "reset"]]
    [:div#trip-types
-    (for [type (keys packing-lists)]
+    (for [type root-trip-types]
       ^{:key type} [:div
                     [:input {:type "checkbox"
                              :checked (trip-selected type)
@@ -171,7 +176,8 @@
              ^{:key i} [:div
                         [:input (cond-> {:type "checkbox"}
                                   (= :question (:type i))
-                                  (assoc :on-change #(toggle-trip-type (:yes i))))]
+                                  (assoc :checked (trip-selected (:yes i))
+                                         :on-change #(toggle-trip-type (:yes i))))]
                         [:label (when (= :action (:type i))
                                   "TODO: ")
                          (:value i)]])]
