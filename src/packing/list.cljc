@@ -61,12 +61,15 @@
                (i "trash bag(s)")
                ::outdoors}
 
-   ::climbing #{(q "bouldering?" ::bouldering)
+   ::climbing #{::outdoors
+                (q "bouldering?" ::bouldering)
                 (q "sport climbing?" ::sport-climbing)
                 (i "chalk")
                 (a "refill chalk")
                 (i "climbing shoes")
-                ::outdoors}
+                (a "trim nails")
+                (a "download offline google map")
+                (a "mountain project download")}
 
    ::bathroom #{(i "toothbrush")
                 (i "toothpaste")
@@ -99,6 +102,7 @@
 
 (defn bucket-by [pred xs]
   (let [r (group-by pred xs)]
+    (assert (<= (count (keys r)) 2))
     [(get r true) (get r false)]))
 
 (defn packing-list'
@@ -172,7 +176,7 @@
                              (reduce clojure.set/union)
                              (bucket-by (k= :type :item)))]
      [:div#list
-      [:ul (for [i others]
+      [:ul (for [i (reverse (sort-by :type others))]
              ^{:key i} [:div
                         [:input (cond-> {:type "checkbox"}
                                   (= :question (:type i))
