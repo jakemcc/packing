@@ -55,10 +55,13 @@
                 (i "Headlamp")
                 (i "sun shirt")
                 (i "sun pants")
-                (i "sun hat")}
+                (i "sun hat")
+                (i "hand sanitizer")}
+
    
    ::camping #{(i "tent")
                (i "trash bag(s)")
+               (i "tablecloth")
                ::outdoors}
 
    ::climbing #{::outdoors
@@ -67,6 +70,7 @@
                 (i "chalk")
                 (a "refill chalk")
                 (i "climbing shoes")
+                (i "electrolytes")
                 (a "trim nails")
                 (a "download offline google map")
                 (a "mountain project download")}
@@ -95,6 +99,8 @@
                    (i "ear plugs")
                    (i "sun glasses")
                    (i "hat")
+                   (i "corkscrew")
+                   (i "coffee mug")
                    (a "Download podcasts")
                    (a "Download videos")
                    (a "Download books")
