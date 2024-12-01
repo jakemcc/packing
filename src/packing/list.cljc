@@ -101,6 +101,8 @@
                    (i "hat")
                    (i "corkscrew")
                    (i "coffee mug")
+                   (i "global entry card")
+                   (i "passport")
                    (a "Download podcasts")
                    (a "Download videos")
                    (a "Download books")
