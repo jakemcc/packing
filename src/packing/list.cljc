@@ -175,10 +175,9 @@
    [:div#trip-types
     (for [type root-trip-types]
       ^{:key type} [:div
-                    [:input {:type "checkbox"
+                    [:label [:input {:type "checkbox"
                              :checked (trip-selected type)
-                             :on-change #(toggle-trip-type type)}]
-                    [:label type]])]
+                             :on-change #(toggle-trip-type type)}] type]])]
    (let [[items others] (->> (trip-types)
                              (mapv (partial packing-list' packing-lists))
                              (reduce clojure.set/union)
@@ -186,18 +185,21 @@
      [:div#list
       [:ul (for [i (reverse (sort-by :type others))]
              ^{:key i} [:div
-                        [:input (cond-> {:type "checkbox"}
+                        
+                        [:label
+                         [:input (cond-> {:type "checkbox"}
                                   (= :question (:type i))
                                   (assoc :checked (trip-selected (:yes i))
                                          :on-change #(toggle-trip-type (:yes i))))]
-                        [:label (when (= :action (:type i))
-                                  "TODO: ")
+                         (when (= :action (:type i))
+                           "TODO: ")
                          (:value i)]])]
       [:ul (for [i (sort-by :type items)]
              ^{:key i} [:div
-                        [:input {:type "checkbox"}]
-                        [:label (when (= :action (:type i))
-                                  "TODO: ")
+                        
+                        [:label [:input {:type "checkbox"}]
+                         (when (= :action (:type i))
+                           "TODO: ")
                          (:value i)]])]])])
 
 (reset! state (load-from-hash))
