@@ -55,7 +55,6 @@
                 (i "sun hat")
                 (i "hand sanitizer")}
 
-
    ::camping #{(i "tent")
                (i "trash bag(s)")
                (i "tablecloth")
@@ -75,8 +74,11 @@
    ::bathroom #{(i "toothbrush")
                 (i "toothpaste")
                 (i "floss")
-                (i "allergy meds")
+                (i "Nasal spray allergy med")
                 (i "Benadryl")
+                (i "Zyrtec")
+                (i "Allegra (Fexofenadine)")
+                (i "Pepcid/Zantac/Famotidine")
                 (i "supplements")
                 (i "shampoo")
                 (i "towel")
