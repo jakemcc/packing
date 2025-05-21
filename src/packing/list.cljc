@@ -16,6 +16,7 @@
 
 (def always #{::accessories ::bathroom ::clothes})
 
+;;!zprint {:format :skip}
 (def packing-lists
   {::clothes #{(a "Lookup Weather")
                (i "underwear")
@@ -29,7 +30,7 @@
                (i "lounging clothes")
                (i "bedtime clothes")
                (i "exercise clothes")}
-   
+
    ::work-trip #{(i "work laptop")
                  (i "work phone")
                  (i "clothes for the office")
@@ -58,7 +59,7 @@
                 (i "sun hat")
                 (i "hand sanitizer")}
 
-   
+
    ::camping #{(i "tent")
                (i "trash bag(s)")
                (i "tablecloth")
@@ -79,6 +80,7 @@
                 (i "toothpaste")
                 (i "floss")
                 (i "allergy meds")
+                (i "Benadryl")
                 (i "supplements")
                 (i "shampoo")
                 (i "towel")
